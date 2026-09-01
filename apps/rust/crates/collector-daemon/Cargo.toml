@@ -1,0 +1,7 @@
+[package]
+name = "collector-daemon"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+agentfloor-core = { path = "../agentfloor-core" }

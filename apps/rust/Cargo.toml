@@ -1,0 +1,8 @@
+
+[workspace]
+members = [
+    "crates/agentfloor-core",
+    "crates/standup",
+    "crates/collector-daemon"
+]
+resolver = "2"

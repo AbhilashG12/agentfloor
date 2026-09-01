@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo " Running lint-staged (Node/TS)..."
+pnpm exec lint-staged
+
+echo "Checking Rust formatting..."
+# Navigate into the Rust workspace and ensure code is formatted
+cd apps/rust || exit 1
+cargo fmt --all -- --check
+
+echo "Running Rust Clippy (Linting)..."
+# Run the Rust linter across the whole workspace, turning warnings into hard errors
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+
+echo "All pre-commit checks passed!"
