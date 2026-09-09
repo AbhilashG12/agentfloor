@@ -1,5 +1,15 @@
 use serde::{Deserialize, Serialize};
 
+
+#[derive(Debug, Clone)]
+pub struct RawAgentEvent {
+    pub session_id: String,
+    pub raw_text_snippet: String, 
+    pub tokens_in: u32,
+    pub tokens_out: u32,
+    pub cost_usd: f64,
+}
+
 #[derive(Serialize,Deserialize,Debug,PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct SummarizedEvent{
