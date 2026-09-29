@@ -1,7 +1,11 @@
 use clap::{Parser, Subcommand, ValueEnum};
 
 #[derive(Parser, Debug)]
-#[command(name = "standup", version, about = "Summarize your git commits for standups")]
+#[command(
+    name = "standup",
+    version,
+    about = "Summarize your git commits for standups"
+)]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Option<Command>,

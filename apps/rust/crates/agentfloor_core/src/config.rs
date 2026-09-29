@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::StandupError;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Config {
     #[serde(default)]
     pub settings: Settings,
@@ -41,15 +41,6 @@ impl Default for Settings {
             author: None,
             default_since: default_since(),
             openai_api_key: None,
-        }
-    }
-}
-
-impl Default for Config {
-    fn default() -> Self {
-        Config {
-            settings: Settings::default(),
-            repos: Vec::new(),
         }
     }
 }

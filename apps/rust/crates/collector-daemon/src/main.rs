@@ -1,43 +1,59 @@
-use tokio::sync::mpsc;
+mod domain;
+
 use reqwest::Client;
-use axum::{routing::get, Router};
+use std::time::{SystemTime, UNIX_EPOCH};
+
+// Import your domain events from the module we created
+use crate::domain::agent_event::SummarizedEvent;
 
 #[tokio::main]
 async fn main() {
-    let (tx, mut rx) = mpsc::channel::<String>(100);
     let http_client = Client::new();
     let api_url = "http://localhost:3001/api/v1/events";
 
-    // 1. Start Health Check server on a background thread
-    tokio::spawn(async {
-        let app = Router::new().route("/health", get(|| async { "Daemon is running" }));
-        let listener = tokio::net::TcpListener::bind("127.0.0.1:8765").await.unwrap();
-        axum::serve(listener, app).await.unwrap();
-    });
+    let actions = [
+        "Reading src/auth/jwt.ts",
+        "Writing tests for auth middleware",
+        "Fixing type errors in packages/contracts",
+        "Agent stuck on retry loop... investigating",
+    ];
 
-    // 2. Start File Watcher on a background thread
-    tokio::spawn(async move {
-        // watch_claude_logs(tx).await; 
-    });
+    let mut i = 0;
+    let mut total_cost = 0.0;
 
-    // 3. Main processing loop (Debounce & Transport)
-    while let Some(_path) = rx.recv().await {
-        // Construct RawEvent (Parsing logic omitted for brevity)
-        let raw = create_dummy_raw_event(); 
-        
-        // Summarize (strips sensitive data)
-        let safe_event = summarize_event(raw, "user_123").await;
+    println!("Starting AgentFloor Simulator...");
 
-        // Transport
-        let res = http_client.post(api_url)
+    loop {
+        total_cost += 0.005; // Simulate spending money
+
+        let safe_event = SummarizedEvent {
+            user_id: "dev_123".to_string(),
+            session_id: "session_abc".to_string(),
+            source: "claude_code".to_string(),
+            summary_text: actions[i % actions.len()].to_string(),
+            tokens_in: 1500,
+            tokens_out: 450,
+            cost_usd: total_cost,
+            ts: SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap()
+                .as_secs() as i64,
+        };
+
+        let res = http_client
+            .post(api_url)
             .header("Authorization", "Bearer dev_api_key_123")
             .json(&safe_event)
             .send()
             .await;
-            
-        println!("Sent event to gateway: {:?}", res.unwrap().status());
-        
-        // Debounce: Sleep for 30s so we don't spam the server on every keystroke
-        tokio::time::sleep(tokio::time::Duration::from_secs(30)).await;
+
+        println!(
+            "Sent simulated action to gateway: {:?}",
+            res.unwrap().status()
+        );
+
+        i += 1;
+        // Wait 5 seconds before the agent "does" something else
+        tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
     }
 }

@@ -1,18 +1,18 @@
 use serde::{Deserialize, Serialize};
 
-
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub struct RawAgentEvent {
     pub session_id: String,
-    pub raw_text_snippet: String, 
+    pub raw_text_snippet: String,
     pub tokens_in: u32,
     pub tokens_out: u32,
     pub cost_usd: f64,
 }
 
-#[derive(Serialize,Deserialize,Debug,PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 #[serde(rename_all = "camelCase")]
-pub struct SummarizedEvent{
+pub struct SummarizedEvent {
     pub user_id: String,
     pub session_id: String,
     pub source: String,
@@ -23,11 +23,10 @@ pub struct SummarizedEvent{
     pub ts: i64,
 }
 
-
 #[cfg(test)]
-mod tests{
+mod tests {
     use super::*;
-    
+
     #[test]
     fn test_serialization_matches_zod_contract() {
         let event = SummarizedEvent {
@@ -39,11 +38,10 @@ mod tests{
             tokens_out: 50,
             cost_usd: 0.002,
             ts: 1690000000,
-        }
+        };
         let json = serde_json::to_string(&event).unwrap();
 
         assert!(json.contains("\"userId\":\"123e4567-e89b-12d3-a456-426614174000\""));
         assert!(json.contains("\"costUsd\":0.002"));
     }
-
 }

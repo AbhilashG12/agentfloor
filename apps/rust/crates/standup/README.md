@@ -109,8 +109,8 @@ standup add C:\Projects\backend
 standup add C:\Projects\frontend --name "web-app"
 ```
 
-| Flag | Description |
-|------|-------------|
+| Flag            | Description                                                |
+| --------------- | ---------------------------------------------------------- |
 | `--name` / `-n` | Display name shown in output. Defaults to the folder name. |
 
 ---
@@ -176,13 +176,13 @@ standup --since 7d --format markdown
 standup --since 7d --summarize
 ```
 
-| Flag | Default | Description |
-|------|---------|-------------|
-| `--since` / `-s` | config default | Time range: `today`, `yesterday`, `Nd` (e.g. `7d`), or `YYYY-MM-DD` |
-| `--author` / `-a` | config default | Filter by author name or email (partial match) |
-| `--repo` / `-r` | — | Run against a single repo path instead of all config repos |
-| `--format` / `-f` | `plain` | Output format: `plain`, `markdown`, `json` |
-| `--summarize` | off | Generate an AI summary of all commits (requires API key) |
+| Flag              | Default        | Description                                                         |
+| ----------------- | -------------- | ------------------------------------------------------------------- |
+| `--since` / `-s`  | config default | Time range: `today`, `yesterday`, `Nd` (e.g. `7d`), or `YYYY-MM-DD` |
+| `--author` / `-a` | config default | Filter by author name or email (partial match)                      |
+| `--repo` / `-r`   | —              | Run against a single repo path instead of all config repos          |
+| `--format` / `-f` | `plain`        | Output format: `plain`, `markdown`, `json`                          |
+| `--summarize`     | off            | Generate an AI summary of all commits (requires API key)            |
 
 ---
 
@@ -276,11 +276,11 @@ pipeline, and improved the local development environment.
 
 Any OpenAI-compatible API works. Recommended options:
 
-| Provider | Cost | Setup |
-|----------|------|-------|
-| [Groq](https://console.groq.com) | Free tier | Sign up, create key, `standup set-key gsk_...` |
-| [OpenAI](https://platform.openai.com) | Paid credits | Add billing, create key, `standup set-key sk-...` |
-| [Ollama](https://ollama.com) | Free, local | Install Ollama, `ollama pull llama3.2`, point URL to `localhost:11434` |
+| Provider                              | Cost         | Setup                                                                  |
+| ------------------------------------- | ------------ | ---------------------------------------------------------------------- |
+| [Groq](https://console.groq.com)      | Free tier    | Sign up, create key, `standup set-key gsk_...`                         |
+| [OpenAI](https://platform.openai.com) | Paid credits | Add billing, create key, `standup set-key sk-...`                      |
+| [Ollama](https://ollama.com)          | Free, local  | Install Ollama, `ollama pull llama3.2`, point URL to `localhost:11434` |
 
 ---
 
@@ -313,14 +313,14 @@ path = 'C:\Projects\frontend'
 
 ## Time Range Reference
 
-| Value | Meaning |
-|-------|---------|
-| `today` | From midnight today |
-| `yesterday` | From midnight yesterday |
-| `1d` | Last 1 day |
-| `7d` | Last 7 days |
-| `30d` | Last 30 days |
-| `2025-03-01` | From a specific date |
+| Value        | Meaning                 |
+| ------------ | ----------------------- |
+| `today`      | From midnight today     |
+| `yesterday`  | From midnight yesterday |
+| `1d`         | Last 1 day              |
+| `7d`         | Last 7 days             |
+| `30d`        | Last 30 days            |
+| `2025-03-01` | From a specific date    |
 
 ---
 
@@ -369,16 +369,15 @@ src/
 
 ## Dependencies
 
-| Crate | Purpose |
-|-------|---------|
-| `clap` | Argument parsing and subcommands |
-| `git2` | Read git history without shelling out |
-| `chrono` | Date/time parsing and formatting |
-| `serde` + `toml` | Config file serialization |
-| `serde_json` | JSON output format |
-| `dirs` | Cross-platform config directory lookup |
-| `colored` | Terminal color output |
-| `reqwest` | HTTP client for LLM API calls |
+| Crate            | Purpose                                |
+| ---------------- | -------------------------------------- |
+| `clap`           | Argument parsing and subcommands       |
+| `git2`           | Read git history without shelling out  |
+| `chrono`         | Date/time parsing and formatting       |
+| `serde` + `toml` | Config file serialization              |
+| `serde_json`     | JSON output format                     |
+| `dirs`           | Cross-platform config directory lookup |
+| `colored`        | Terminal color output                  |
+| `reqwest`        | HTTP client for LLM API calls          |
 
 ---
-

@@ -1,11 +1,12 @@
 mod cli;
 mod commands;
-mod config;
-mod error;
-mod git;
-mod llm;
+// mod config;
+// mod error;
+// mod git;
+// mod llm;
 mod output;
 
+use agentfloor_core::{config, error, git, llm};
 use clap::Parser;
 use colored::Colorize;
 
@@ -38,10 +39,7 @@ fn run(args: Cli) -> Result<(), StandupError> {
 fn run_report(args: Cli) -> Result<(), StandupError> {
     let cfg = config::load()?;
 
-    let author = args
-        .author
-        .as_deref()
-        .or(cfg.settings.author.as_deref());
+    let author = args.author.as_deref().or(cfg.settings.author.as_deref());
 
     let since = args
         .since
@@ -57,7 +55,10 @@ fn run_report(args: Cli) -> Result<(), StandupError> {
 
         if summarize {
             run_summary(
-                &[RepoSummary { name: &repo_path, commits: &commits }],
+                &[RepoSummary {
+                    name: &repo_path,
+                    commits: &commits,
+                }],
                 &since,
                 &cfg,
             )?;
@@ -101,17 +102,15 @@ fn run_report(args: Cli) -> Result<(), StandupError> {
         all_repo_data.push((repo.name.clone(), commits));
     }
 
-    if cfg.repos.len() > 1 {
-        if !matches!(format, Format::Json) {
-            println!(
-                "{}",
-                format!(
-                    "─── {} repos · {} commits · since {} ───",
-                    active_repos, total_commits, since
-                )
-                .dimmed()
-            );
-        }
+    if cfg.repos.len() > 1 && !matches!(format, Format::Json) {
+        println!(
+            "{}",
+            format!(
+                "─── {} repos · {} commits · since {} ───",
+                active_repos, total_commits, since
+            )
+            .dimmed()
+        );
     }
 
     if summarize {
@@ -131,16 +130,12 @@ fn run_summary(
     since: &str,
     cfg: &config::Config,
 ) -> Result<(), StandupError> {
-    let api_key = cfg
-        .settings
-        .openai_api_key
-        .as_deref()
-        .ok_or_else(|| {
-            StandupError::Llm(
-                "No API key set. Run `standup set-key <key>` or add it during `standup init`."
-                    .to_string(),
-            )
-        })?;
+    let api_key = cfg.settings.openai_api_key.as_deref().ok_or_else(|| {
+        StandupError::Llm(
+            "No API key set. Run `standup set-key <key>` or add it during `standup init`."
+                .to_string(),
+        )
+    })?;
 
     let total: usize = repos.iter().map(|r| r.commits.len()).sum();
 

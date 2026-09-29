@@ -16,13 +16,13 @@ pub fn parse_since(since: &str) -> Result<i64, StandupError> {
 
     let dt = match since {
         "yesterday" => {
-            let yesterday = now - chrono::Duration::days(1); 
+            let yesterday = now - chrono::Duration::days(1);
             let naive = yesterday
                 .date_naive()
                 .and_hms_opt(0, 0, 0)
                 .ok_or_else(|| StandupError::InvalidDate(since.to_string()))?;
             Local
-                .from_local_datetime(&naive) 
+                .from_local_datetime(&naive)
                 .single()
                 .ok_or_else(|| StandupError::InvalidDate(since.to_string()))?
         }
@@ -41,10 +41,10 @@ pub fn parse_since(since: &str) -> Result<i64, StandupError> {
                 .trim_end_matches('d')
                 .parse()
                 .map_err(|_| StandupError::InvalidDate(s.to_string()))?;
-            now - chrono::Duration::days(days) 
+            now - chrono::Duration::days(days)
         }
         s => {
-            let naive_date = chrono::NaiveDate::parse_from_str(s, "%Y-%m-%d") 
+            let naive_date = chrono::NaiveDate::parse_from_str(s, "%Y-%m-%d")
                 .map_err(|_| StandupError::InvalidDate(s.to_string()))?;
             let naive_dt = naive_date
                 .and_hms_opt(0, 0, 0)

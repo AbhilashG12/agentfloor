@@ -30,7 +30,10 @@ pub fn print_commits(repo: &str, commits: &[CommitInfo], since: &str, format: &F
 
 fn print_plain(repo: &str, commits: &[CommitInfo], since: &str) {
     if commits.is_empty() {
-        println!("{}", format!("{} — no commits since {}", repo, since).dimmed());
+        println!(
+            "{}",
+            format!("{} — no commits since {}", repo, since).dimmed()
+        );
         return;
     }
 
@@ -46,8 +49,15 @@ fn print_plain(repo: &str, commits: &[CommitInfo], since: &str) {
         );
     }
 
-    let noun = if commits.len() == 1 { "commit" } else { "commits" };
-    println!("{}", format!("  {} {} since {}", commits.len(), noun, since).dimmed());
+    let noun = if commits.len() == 1 {
+        "commit"
+    } else {
+        "commits"
+    };
+    println!(
+        "{}",
+        format!("  {} {} since {}", commits.len(), noun, since).dimmed()
+    );
     println!();
 }
 
@@ -61,13 +71,14 @@ fn print_markdown(repo: &str, commits: &[CommitInfo], since: &str) {
 
     for commit in commits {
         let time_str = commit.timestamp.format("%Y-%m-%d %H:%M").to_string();
-        println!(
-            "- `{}` {} _{}_",
-            commit.hash, commit.message, time_str
-        );
+        println!("- `{}` {} _{}_", commit.hash, commit.message, time_str);
     }
 
-    let noun = if commits.len() == 1 { "commit" } else { "commits" };
+    let noun = if commits.len() == 1 {
+        "commit"
+    } else {
+        "commits"
+    };
     println!("\n_{} {} since {}_\n", commits.len(), noun, since);
 }
 

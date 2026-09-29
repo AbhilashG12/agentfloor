@@ -1,5 +1,5 @@
 use reqwest::blocking::Client;
-use serde_json::{json, Value};
+use serde_json::{Value, json};
 
 use crate::error::StandupError;
 use crate::git::CommitInfo;

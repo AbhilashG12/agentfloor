@@ -17,8 +17,8 @@ impl fmt::Display for StandupError {
             StandupError::NoRepoFound(path) => {
                 write!(f, "No git repository found at: {}", path)
             }
-            StandupError::Config(msg)=>write!(f,"Config error : {}", msg),
-            StandupError::Llm(msg)=>write!(f,"LLM Error : {}", msg),
+            StandupError::Config(msg) => write!(f, "Config error : {}", msg),
+            StandupError::Llm(msg) => write!(f, "LLM Error : {}", msg),
         }
     }
 }

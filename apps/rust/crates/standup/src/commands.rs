@@ -3,8 +3,8 @@ use std::path::Path;
 
 use colored::Colorize;
 
-use crate::config::{self, Config, RepoEntry, Settings};
-use crate::error::StandupError;
+use agentfloor_core::config::{self, Config, RepoEntry, Settings};
+use agentfloor_core::error::StandupError;
 
 pub fn init() -> Result<(), StandupError> {
     println!("{}", "Setting up standup...".bold());
@@ -12,7 +12,11 @@ pub fn init() -> Result<(), StandupError> {
 
     let path = config::config_path()?;
     if path.exists() {
-        println!("{} Config already exists at {}", "✓".green(), path.display());
+        println!(
+            "{} Config already exists at {}",
+            "✓".green(),
+            path.display()
+        );
         println!("Use {} to add repos.", "`standup add <path>`".cyan());
         return Ok(());
     }
@@ -22,24 +26,40 @@ pub fn init() -> Result<(), StandupError> {
     let mut author_input = String::new();
     io::stdin().read_line(&mut author_input).unwrap();
     let author_input = author_input.trim().to_string();
-    let author = if author_input.is_empty() { None } else { Some(author_input) };
+    let author = if author_input.is_empty() {
+        None
+    } else {
+        Some(author_input)
+    };
 
     print!("Default time range [yesterday]: ");
     io::stdout().flush().unwrap();
     let mut since_input = String::new();
     io::stdin().read_line(&mut since_input).unwrap();
     let since_input = since_input.trim().to_string();
-    let default_since = if since_input.is_empty() { "yesterday".to_string() } else { since_input };
+    let default_since = if since_input.is_empty() {
+        "yesterday".to_string()
+    } else {
+        since_input
+    };
 
     print!("OpenAI API key for --summarize (press Enter to skip): ");
     io::stdout().flush().unwrap();
     let mut key_input = String::new();
     io::stdin().read_line(&mut key_input).unwrap();
     let key_input = key_input.trim().to_string();
-    let openai_api_key = if key_input.is_empty() { None } else { Some(key_input) };
+    let openai_api_key = if key_input.is_empty() {
+        None
+    } else {
+        Some(key_input)
+    };
 
     let config = Config {
-        settings: Settings { author, default_since, openai_api_key },
+        settings: Settings {
+            author,
+            default_since,
+            openai_api_key,
+        },
         repos: Vec::new(),
     };
 
@@ -72,11 +92,18 @@ pub fn add(path: String, name: Option<String>) -> Result<(), StandupError> {
     let mut config = config::load()?;
 
     if config.repos.iter().any(|r| r.path == abs_path_str) {
-        println!("{} Repo at {} is already in your config.", "!".yellow(), abs_path_str);
+        println!(
+            "{} Repo at {} is already in your config.",
+            "!".yellow(),
+            abs_path_str
+        );
         return Ok(());
     }
 
-    config.repos.push(RepoEntry { name: repo_name.clone(), path: abs_path_str });
+    config.repos.push(RepoEntry {
+        name: repo_name.clone(),
+        path: abs_path_str,
+    });
     config::save(&config)?;
     println!("{} Added '{}'", "✓".green(), repo_name.cyan());
 
@@ -96,12 +123,20 @@ pub fn list() -> Result<(), StandupError> {
     println!();
 
     for repo in &config.repos {
-        let status = if Path::new(&repo.path).exists() { "✓".green() } else { "✗".red() };
+        let status = if Path::new(&repo.path).exists() {
+            "✓".green()
+        } else {
+            "✗".red()
+        };
         println!("  {} {}  {}", status, repo.name.cyan(), repo.path.dimmed());
     }
 
     println!();
-    println!("{} Default since: {}", "→".dimmed(), config.settings.default_since.yellow());
+    println!(
+        "{} Default since: {}",
+        "→".dimmed(),
+        config.settings.default_since.yellow()
+    );
 
     if let Some(author) = &config.settings.author {
         println!("{} Default author: {}", "→".dimmed(), author.yellow());
@@ -125,7 +160,9 @@ pub fn remove(name: &str) -> Result<(), StandupError> {
     if before == config.repos.len() {
         println!(
             "{} No repo named '{}' found. Use {} to see names.",
-            "!".yellow(), name, "`standup list`".cyan()
+            "!".yellow(),
+            name,
+            "`standup list`".cyan()
         );
         return Ok(());
     }

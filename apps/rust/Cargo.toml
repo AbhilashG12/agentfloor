@@ -1,7 +1,7 @@
 
 [workspace]
 members = [
-    "crates/agentfloor-core",
+    "crates/agentfloor_core",
     "crates/standup",
     "crates/collector-daemon"
 ]
