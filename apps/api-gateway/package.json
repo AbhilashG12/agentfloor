@@ -12,6 +12,7 @@
   "packageManager": "pnpm@10.26.0",
   "dependencies": {
     "express": "^5.2.1",
+    "kafkajs": "^2.2.4",
     "pg": "^8.23.0",
     "redis": "^6.2.1",
     "socket.io": "^4.8.3",
